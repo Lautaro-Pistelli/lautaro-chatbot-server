@@ -36,3 +36,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor backend corriendo en puerto ${PORT}`);
 });
+
+app.get("/", (req, res) => {
+  res.send("🚀 Lautaro GPT backend is running!");
+});
