@@ -1,4 +1,3 @@
-// server/index.js
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -8,7 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const HUGGINGFACE_API_URL = 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1';
+// ✅ Modelo gratuito compatible con Hugging Face Inference API
+const HUGGINGFACE_API_URL = 'https://api-inference.huggingface.co/models/google/flan-t5-small';
 
 app.post('/api/chat', async (req, res) => {
   const prompt = req.body.prompt;
@@ -24,19 +24,21 @@ app.post('/api/chat', async (req, res) => {
       }
     );
 
+    // ✅ Este modelo devuelve un array con 'generated_text'
     const generatedText = response.data?.[0]?.generated_text || 'No se pudo generar una respuesta.';
     res.json({ reply: generatedText });
   } catch (error) {
-    console.error(error.message);
+    console.error('Error al conectar con Hugging Face:', error.message);
     res.status(500).json({ reply: 'Error al conectar con Hugging Face' });
   }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en puerto ${PORT}`);
+  console.log(`🚀 Servidor backend corriendo en puerto ${PORT}`);
 });
 
+// ✅ Ruta raíz para testear que el server esté vivo
 app.get("/", (req, res) => {
   res.send("🚀 Lautaro GPT backend is running!");
 });
